@@ -3,11 +3,14 @@ package com.jlu.experiment.block.chain.model;
 import java.util.Date;
 
 /**
- * 区块model
+ * 配置model
  */
-public class Block {
+public class BlockConfig {
+
     private Long id;
-    private String blockNo;
+    private String key;
+    private String value;
+    private String desc;
     private Date createTime;
     private Date updateTime;
 
@@ -19,12 +22,28 @@ public class Block {
         this.id = id;
     }
 
-    public String getBlockNo() {
-        return blockNo;
+    public String getKey() {
+        return key;
     }
 
-    public void setBlockNo(String blockNo) {
-        this.blockNo = blockNo;
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public Date getCreateTime() {

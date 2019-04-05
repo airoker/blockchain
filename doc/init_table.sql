@@ -17,8 +17,7 @@ CREATE TABLE `t_transaction` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `transaction_no` varchar(64) NOT NULL DEFAULT '' COMMENT '交易号',
   `context` varchar(100) NOT NULL DEFAULT '' COMMENT '交易内容',
-  `status` tinyint NOT NULL DEFAULT '0' CO
-  MMENT '交易状态',
+  `status` tinyint NOT NULL DEFAULT '0' COMMENT '交易状态',
   `block_no` varchar(64) NOT NULL DEFAULT '' COMMENT '所属区块号',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',

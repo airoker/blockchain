@@ -3,10 +3,13 @@ package com.jlu.experiment.block.chain.model;
 import java.util.Date;
 
 /**
- * 区块model
+ * 交易model
  */
-public class Block {
+public class Transaction {
     private Long id;
+    private String transactionNo;
+    private String context;
+    private Integer status;
     private String blockNo;
     private Date createTime;
     private Date updateTime;
@@ -17,6 +20,30 @@ public class Block {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTransactionNo() {
+        return transactionNo;
+    }
+
+    public void setTransactionNo(String transactionNo) {
+        this.transactionNo = transactionNo;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getBlockNo() {

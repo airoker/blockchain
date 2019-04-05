@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlu.experiment.block.chain.dao.TransactionDao">
+
+    <resultMap id="transactionResultMap"
+               type="com.jlu.experiment.block.chain.model.Transaction">
+    </resultMap>
+
+    <insert id="insertOne" parameterType="com.jlu.experiment.block.chain.model.Transaction">
+        insert into t_block
+        (
+            `transaction_no`,
+            `context`,
+            `status`,
+            `block_no`
+        )
+        VALUES
+        (
+            #{transactionNo},
+            #{context},
+            #{status},
+            #{blockNo}
+        )
+
+    </insert>
+
+
+</mapper>
