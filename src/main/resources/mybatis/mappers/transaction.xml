@@ -7,7 +7,7 @@
     </resultMap>
 
     <insert id="insertOne" parameterType="com.jlu.experiment.block.chain.model.Transaction">
-        insert into t_block
+        insert into t_transaction
         (
             `transaction_no`,
             `context`,

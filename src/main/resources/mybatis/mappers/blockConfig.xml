@@ -6,18 +6,24 @@
                type="com.jlu.experiment.block.chain.model.BlockConfig">
     </resultMap>
 
-    <insert id="insertOne" parameterType="com.jlu.experiment.block.chain.model.Block">
-        insert into t_block
-        (
-            `id`,
-            `block_no`
-        )
-        VALUES
-        (
-            #{id},
-            #{blockNo}
-        )
-    </insert>
+    <update id="updateConfigByKey">
+        UPDATE t_config
+        set
+        `value` = #{value}
+        where `key` = #{key}
+    </update>
+
+    <select id="selectByKey" resultMap="blockConfigResultMap">
+        select
+            id,
+            `key`,
+            `value`,
+            `desc`,
+            create_time,
+            update_time
+        from t_config
+        where `key` = #{key}
+    </select>
 
 
 </mapper>

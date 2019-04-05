@@ -3,6 +3,7 @@ package com.jlu.experiment.block.chain.controller;
 import com.jlu.experiment.block.chain.service.BlockService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
@@ -19,6 +20,7 @@ public class BlockController {
     private BlockService blockService;
 
     @RequestMapping("/transaction/create")
+    @ResponseBody
     public String createTransaction(){
         String transactionNo = blockService.createOneTransaction();
         return transactionNo;

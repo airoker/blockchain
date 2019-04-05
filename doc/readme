@@ -1,0 +1,11 @@
+
+创建交易
+http://localhost:8080/block/chain/block/transaction/create
+
+配置-生成区块时间
+http://localhost:8080/block/chain/config/blockTimeRange
+http://localhost:8080/block/chain/config/update/blockTimeRange?range=120
+
+配置-交易限制阈值
+http://localhost:8080/block/chain/config/transactionLimit
+http://localhost:8080/block/chain/config/update/transactionLimit?limit=200

@@ -34,3 +34,9 @@ CREATE TABLE `t_block` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_block` (`block_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='区块表';
+
+
+insert into t_config(`key`,`value`,`desc`)
+values
+('blockTimeRange', '60', '生成区块的时间间隔,单位 秒'),
+('transactionLimit', '100', '交易限制阈值key');
