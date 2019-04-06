@@ -1,6 +1,9 @@
 package com.jlu.experiment.block.chain.controller;
 
+import com.jlu.experiment.block.chain.common.Constant;
+import com.jlu.experiment.block.chain.model.JsonResult;
 import com.jlu.experiment.block.chain.service.BlockConfigService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,29 +25,50 @@ public class BlockConfigController {
 
     @RequestMapping("/transactionLimit")
     @ResponseBody
-    public String transactionLimit() {
+    public JsonResult<String> transactionLimit() {
         Long transactionLimit = blockConfigService.queryTransactionLimit();
-        return transactionLimit.toString();
+        return JsonResult.success(transactionLimit.toString());
     }
 
     @RequestMapping("/blockTimeRange")
     @ResponseBody
-    public String blockTimeRange() {
+    public JsonResult<String> blockTimeRange() {
         Long blockTimeRange = blockConfigService.queryBlockTimeRange();
-        return blockTimeRange.toString();
+        return JsonResult.success(blockTimeRange.toString());
+    }
+
+    @RequestMapping("/workerStatus")
+    @ResponseBody
+    public JsonResult<String> workerStatus() {
+        String workerStatus = blockConfigService.queryWorkerStatus();
+        return JsonResult.success(workerStatus);
     }
 
     @RequestMapping("/update/transactionLimit")
     @ResponseBody
-    public String updateTransactionLimit(@RequestParam("limit") long limit) {
+    public JsonResult<String> updateTransactionLimit(@RequestParam("limit") long limit) {
         blockConfigService.modifyTransactionLimit(limit);
-        return "success";
+        return JsonResult.success("success");
     }
 
     @RequestMapping("/update/blockTimeRange")
     @ResponseBody
-    public String updateBlockTimeRange(@RequestParam("range") long range) {
+    public JsonResult<String> updateBlockTimeRange(@RequestParam("range") long range) {
         blockConfigService.modifyBlockTimeRange(range);
-        return "success";
+        return JsonResult.success("success");
+    }
+
+    @RequestMapping("/update/workerStatus")
+    @ResponseBody
+    public JsonResult<String> updateWorkerStatus(@RequestParam("value")String value) {
+        if(StringUtils.equals(value, Constant.WorkerStatus.WORK)){
+            blockConfigService.modifyWorkerStatus(Constant.WorkerStatus.WORK);
+            return JsonResult.success("启动成功!");
+        }else if(StringUtils.equals(value, Constant.WorkerStatus.STOP)){
+            blockConfigService.modifyWorkerStatus(Constant.WorkerStatus.STOP);
+            return JsonResult.success("停止成功!");
+        }else {
+            return JsonResult.error("参数有误！");
+        }
     }
 }

@@ -50,9 +50,34 @@ public class BlockConfigService {
         return modifyConfig(key, String.valueOf(value));
     }
 
-    private BlockConfig queryByKey(String key){
+    public BlockConfig queryByKey(String key) {
         return blockConfigDao.selectByKey(key);
     }
 
 
+    public void modifyLimitStatus(String aTrue) {
+        modifyConfig(Constant.ConfigKey.LIMIT_STATUS, aTrue);
+    }
+
+    public String queryWorkerStatus() {
+        String key = Constant.ConfigKey.WORKER_STATUS;
+        BlockConfig blockConfig = queryByKey(key);
+        if (blockConfig != null) {
+            return blockConfig.getValue();
+        } else {
+            return Constant.WorkerStatus.STOP;
+        }
+    }
+
+    public void modifyWorkerStatus(String value) {
+        modifyConfig(Constant.ConfigKey.WORKER_STATUS, value);
+    }
+
+    public Long queryWorkerTimeCost(){
+        return queryNumValue(Constant.ConfigKey.WORKER_TIME_COST);
+    }
+
+    public Long queryBlockLength() {
+        return queryNumValue(Constant.ConfigKey.BLOCK_LENGTH);
+    }
 }

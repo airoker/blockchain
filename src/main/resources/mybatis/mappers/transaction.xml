@@ -24,5 +24,34 @@
 
     </insert>
 
+    <select id="selectCountByStatus" resultType="long">
+        select count(1)
+        from t_transaction
+        where `status` = #{status}
+    </select>
+
+    <select id="selectTransaction" resultMap="transactionResultMap">
+        SELECT
+            id,
+            transaction_no,
+            context,
+            status,
+            block_no,
+            create_time,
+            update_time
+        from t_transaction
+        where `status` = #{status}
+        limit #{limit}
+    </select>
+
+    <update id="updateTransaction">
+        update t_transaction
+        set block_no = #{blockNo}, status = #{status}
+        where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </update>
+
 
 </mapper>

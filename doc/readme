@@ -1,6 +1,9 @@
 
+用户页面
+http://localhost:8080/user.jsp
+
 创建交易
-http://localhost:8080/block/chain/block/transaction/create
+http://localhost:8080/block/chain/block/transaction/create?value=1
 
 配置-生成区块时间
 http://localhost:8080/block/chain/config/blockTimeRange

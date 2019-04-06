@@ -6,16 +6,15 @@
                type="com.jlu.experiment.block.chain.model.Block">
     </resultMap>
 
-    <insert id="insertOne" parameterType="com.jlu.experiment.block.chain.model.Block">
-        insert into t_block
-        (
-            `block_no`
-        )
-        VALUES
-        (
-            #{blockNo}
-        )
+    <select id="selectCount"  resultType="long">
+        select count(1) from t_block
+    </select>
+
+    <insert id="insertOne">
+        insert into t_block ( `block_no`)
+        values (#{blockNo})
     </insert>
+
 
 
 </mapper>

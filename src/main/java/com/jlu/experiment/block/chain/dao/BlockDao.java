@@ -6,4 +6,7 @@ package com.jlu.experiment.block.chain.dao;
  * @since 2019/4/5
  */
 public interface BlockDao {
+    long selectCount();
+
+    void insertOne(String blockNo);
 }

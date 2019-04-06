@@ -22,7 +22,8 @@ CREATE TABLE `t_transaction` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uniq_transaction` (`transaction_no`)
+  UNIQUE KEY `uniq_transaction` (`transaction_no`),
+  key `idx_create_time` (`create_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='交易表';
 
 
@@ -39,4 +40,10 @@ CREATE TABLE `t_block` (
 insert into t_config(`key`,`value`,`desc`)
 values
 ('blockTimeRange', '60', '生成区块的时间间隔,单位 秒'),
-('transactionLimit', '100', '交易限制阈值key');
+('transactionLimit', '100', '交易限制阈值key'),
+('limitStatus', 'false', '是否限制'),
+('workerStatus', 'stop', '矿工工作状态'),
+('workerTimeCost', '600', '矿工挖矿耗时, 单位 秒'),
+('blockLength', '100', '区块承载交易最大数量')
+
+;

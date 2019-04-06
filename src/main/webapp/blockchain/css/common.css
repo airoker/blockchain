@@ -1,0 +1,21 @@
+body,p{margin: 0;}
+body,html,.parent{height: 100%;}
+
+.middle{
+    overflow: hidden;
+    height: calc(100% - 100px);
+}
+.left{
+    float: left;
+    width: 30%;
+    margin-right: 20px;
+    height: 100%;
+}
+.right{
+    overflow: auto;
+    height: 100%;
+}
+.right-in{
+    height: 1000px;
+}
+.top,.bottom{height:50px;}
