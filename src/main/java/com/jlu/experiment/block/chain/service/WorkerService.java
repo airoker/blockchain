@@ -1,21 +1,13 @@
 package com.jlu.experiment.block.chain.service;
 
-import com.google.common.collect.Lists;
 import com.jlu.experiment.block.chain.common.Constant;
-import com.jlu.experiment.block.chain.model.Block;
-import com.jlu.experiment.block.chain.model.Transaction;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -37,28 +29,37 @@ public class WorkerService {
     @Resource
     private Worker worker;
 
+    @Resource
+    private LimitStatusService limitStatusService;
+
     // 不停检测
     @PostConstruct
     public void init() {
-        scheduledExecutorService.schedule(new Callable<Object>() {
+        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
-            public Object call() throws Exception {
+            public void run() {
                 work();
-                return null;
             }
-        }, 3, TimeUnit.SECONDS);
+        }, 3, 3, TimeUnit.SECONDS);
     }
 
-    public void work() throws InterruptedException {
-        String status = blockConfigService.queryWorkerStatus();
-        if (StringUtils.equals(Constant.WorkerStatus.WORK, status)) {
-            logger.info("working, generate one block");
-            Long length = blockConfigService.queryBlockLength();
+    public void work() {
+        System.out.println("work");
+        try {
+            String status = blockConfigService.queryWorkerStatus();
+            if (StringUtils.equals(Constant.WorkerStatus.WORK, status)) {
+                logger.info("working, generate one block");
+                Long length = blockConfigService.queryBlockLength();
 
-            worker.doWork(length);
+                worker.doWork(length);
 
-            Long timeCost = blockConfigService.queryWorkerTimeCost();
-            Thread.sleep(timeCost * 1000);
+                limitStatusService.checkRelease();
+
+                Long timeCost = blockConfigService.queryWorkerTimeCost();
+                Thread.sleep(timeCost * 1000);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

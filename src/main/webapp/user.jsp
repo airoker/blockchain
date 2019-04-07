@@ -11,18 +11,32 @@
 <div id="parent" class="parent">
     <div class="top">
     </div>
-    <div id="process" class="left">
+    <div id="process" class="left-half">
         <div id="create" style="text-align:center">
             <input id="oneTransaction" class="button button-small-caps button-primary" value="手动触发交易"/>
         </div>
         <div style="height: 50px"></div>
         <div id="batchCreate" style="text-align:center">
-            <input id="batchTransaction" class="button button-small-caps button-primary" value="自动触发交易"/>
+            <div>
+                <input id="batchTransaction" class="button button-small-caps button-primary" value="自动触发交易"/>
+            </div>
+            <div>
+                <div>
+                <a>自动发送间隔(单位：秒):</a><input id="interval" value="1">
+                </div>
+                <div>
+                <a>自动发送次数:</a><input id="count" value="5">
+                </div>
+                <div>
+                <a>已发送:</a><a id="send">0</a>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <div id="status" class="right">
-        <div id="statusShow" style="text-align:center">
+        <div id="statusShow" style="text-align:left">
 
         </div>
     </div>
@@ -77,13 +91,19 @@
     var timeTask = setInterval(function () {
         checkStatus();
     }, 1000);
-
+    
     (function($) {
         $('#oneTransaction').on('click', function () {
-            document.getElementById("oneTransaction").setAttribute("disabled","disabled");
+
+            var valueVar = prompt("请输入交易内容", "1");
+            if (valueVar == null ) {
+                return false;
+            }
+
+            document.getElementById("oneTransaction").setAttribute("disabled", "disabled");
 
             $.ajax({
-                url: '/block/chain/block/transaction/create?value=1',
+                url: '/block/chain/block/transaction/create?value=' + valueVar,
                 type: 'GET',
                 timeout: 5000,
                 success: function (data) {
@@ -107,30 +127,67 @@
         });
 
         $('#batchTransaction').on('click', function () {
+            var intervalValue = $('#interval').val();
+            var sendCount = $('#count').val();
+
+            var context = "请输入交易内容（每" + intervalValue + "秒，发送" + sendCount + "次)";
+            var valueVar = prompt(context, "1");
+            if (valueVar == null ) {
+                return false;
+            }
+
             document.getElementById("batchTransaction").setAttribute("disabled","disabled");
-            $.ajax({
-                url: '/block/chain/block/transaction/autoCreate?value=1&count=5&interval=1',
-                type: 'GET',
-                timeout: 500000,
-                success: function (data) {
-                    if(data.ret == true){
-                        alert(data.data);
-                    } else {
-                        alert(data.msg)
-                    }
-                    document.getElementById("batchTransaction").removeAttribute("disabled");
-                },
-                error: function () {
-                    var ERR_MESSAGE = "提示：操作失败，请稍后重试!";
-                    alert(ERR_MESSAGE);
-                    document.getElementById("batchTransaction").removeAttribute("disabled");
+            var sendEle = document.getElementById("send");
+
+            var currentIndex = 0;
+            sendEle.innerText = "" + currentIndex;
+            createTransaction();
+
+            function createTransaction() {
+                if (currentIndex >= sendCount){
+                    return;
                 }
 
-            });
+                $.ajax({
+                    url: '/block/chain/block/transaction/create?value=' + valueVar,
+                    type: 'GET',
+                    timeout: 5000,
+                    async: false,
+                    success: function (data) {
+                        if(data.ret == true){
+                            currentIndex++;
+                            sendEle.innerText = "" + currentIndex;
+                            sleep(intervalValue * 1000);
+                            createTransaction();
+                        } else {
+                            alert(data.msg);
+                        }
+
+                    },
+                    error: function () {
+                        var ERR_MESSAGE = "提示：操作失败，请稍后重试!";
+                        alert(ERR_MESSAGE);
+                    }
+
+                });
+
+            }
+
+            document.getElementById("batchTransaction").removeAttribute("disabled");
 
             return false;
 
         });
+
+        function sleep(numberMillis) {
+            var now = new Date();
+            var exitTime = now.getTime() + numberMillis;
+            while (true) {
+                now = new Date();
+                if (now.getTime() > exitTime)
+                    return;
+            }
+        }
     })(jQuery)
 </script>
 </body>
